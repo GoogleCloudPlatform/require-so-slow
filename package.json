@@ -1,7 +1,8 @@
 {
   "name": "require-so-slow",
   "version": "1.0.0",
-  "description": "",
+  "description": "`require`s taking too much time? Profile 'em.",
+  "repository": "ofrobots/require-so-slow",
   "main": "build/src/index.js",
   "dependencies": {},
   "devDependencies": {
@@ -10,7 +11,7 @@
     "typescript": "~2.6.1"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "node -e 0",
     "check": "gts check",
     "clean": "gts clean",
     "compile": "tsc -p .",
