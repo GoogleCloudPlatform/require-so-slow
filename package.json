@@ -1,0 +1,37 @@
+{
+  "name": "require-so-slow",
+  "version": "1.0.0",
+  "description": "",
+  "main": "build/src/index.js",
+  "dependencies": {},
+  "devDependencies": {
+    "@types/node": "^9.6.1",
+    "gts": "^0.5.4",
+    "typescript": "~2.6.1"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "check": "gts check",
+    "clean": "gts clean",
+    "compile": "tsc -p .",
+    "fix": "gts fix",
+    "prepare": "npm run compile",
+    "pretest": "npm run compile",
+    "posttest": "npm run check"
+  },
+  "files": [
+    "LICENSE",
+    "package.json",
+    "README.md",
+    "build/src"
+  ],
+  "keywords": [
+    "require",
+    "profiler",
+    "timeline",
+    "trace_events",
+    "trace"
+  ],
+  "author": "",
+  "license": "Apache-2.0"
+}
