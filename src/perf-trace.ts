@@ -23,10 +23,10 @@
 
 import * as fs from 'fs';
 
-type Microseconds = number;
+export type Microseconds = number;
 
 /** @return a high-res timestamp of the current time. */
-function now(): Microseconds {
+export function now(): Microseconds {
   const [sec, nsec] = process.hrtime();
   return (sec * 1e6) + (nsec / 1e3);
 }
@@ -36,7 +36,7 @@ function now(): Microseconds {
  * https://docs.google.com/document/d/1CvAClvFfyA5R-PhYUmn5OOQtYMH4h6I0nSsKchNAySU/edit
  * Field names are chosen to match the JSON format.
  */
-declare interface Event {
+export interface Event {
   name: string;
   ph: 'B'|'E'|'X'|'C';
   pid: number;  // Required field in the trace viewer, but we don't use it.
@@ -45,7 +45,7 @@ declare interface Event {
   args?: {};
 }
 
-const events: Event[] = [];
+let events: Event[] = [];
 
 /** wrap wraps enter()/leave() calls around a block of code. */
 export function wrap<T>(name: string, f: () => T): T {
@@ -70,6 +70,13 @@ export function counter(name: string, counts: {[name: string]: number}) {
 /** write writes the trace in Chrome Trace format to a given path. */
 export function write(path: string) {
   fs.writeFileSync(path, JSON.stringify(events), {encoding: 'utf8'});
+}
+
+/** returns and clears the event buffer. */
+export function getAndClearEvents(): Event[] {
+  const buffer = events;
+  events = [];
+  return buffer;
 }
 
 /** Record the current heap usage to the performance trace. */
