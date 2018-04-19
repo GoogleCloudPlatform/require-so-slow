@@ -4,9 +4,16 @@
   "description": "`require`s taking too much time? Profile 'em.",
   "repository": "ofrobots/require-so-slow",
   "main": "build/src/index.js",
-  "dependencies": {},
+  "types": "build/src/index.d.ts",
+  "bin": {
+    "rss": "build/src/cli.js"
+  },
+  "dependencies": {
+    "npm-package-arg": "^6.0.0"
+  },
   "devDependencies": {
     "@types/node": "^9.6.1",
+    "@types/npm-package-arg": "^5.1.0",
     "gts": "^0.5.4",
     "typescript": "~2.6.1"
   },

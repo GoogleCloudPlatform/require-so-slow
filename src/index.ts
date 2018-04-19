@@ -1,17 +1,7 @@
-
-import * as perfTrace from './perf-trace';
-const MODULE = require('module');
-
-const orig = MODULE._load;
-MODULE._load = function(request: string, parent: {}, isMain: boolean) {
-  const args = arguments;
-  let exports;
-  perfTrace.wrap(`require ${request}`, () => {
-    exports = orig.apply(this, args);
-  });
-  return exports;
-};
+import * as shim from './shim';
 
 export function write(path: string) {
-  perfTrace.write(path);
+  shim.write(path);
 }
+
+shim.createShim();
