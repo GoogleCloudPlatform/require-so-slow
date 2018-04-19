@@ -13,10 +13,10 @@ unit_tests: &unit_tests
     - run:
         name: Run unit tests.
         command: npm test
-    - run:
-        name: Submit coverage data to codecov.
-        command: npm run codecov
-        when: always
+    # - run:
+    #     name: Submit coverage data to codecov.
+    #     command: npm run codecov
+    #     when: always
 
 version: 2.0
 workflows:
