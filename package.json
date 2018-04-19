@@ -14,11 +14,14 @@
   "devDependencies": {
     "@types/node": "^9.6.1",
     "@types/npm-package-arg": "^5.1.0",
+    "@types/tape": "^4.2.32",
     "gts": "^0.5.4",
+    "source-map-support": "^0.5.4",
+    "tape": "^4.9.0",
     "typescript": "~2.6.1"
   },
   "scripts": {
-    "test": "node -e 0",
+    "test": "tape -r source-map-support/register build/test/test*.js",
     "check": "gts check",
     "clean": "gts clean",
     "compile": "tsc -p .",
