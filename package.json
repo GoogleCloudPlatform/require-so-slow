@@ -17,6 +17,7 @@
     "@types/tape": "^4.2.32",
     "codecov": "^3.0.0",
     "gts": "^0.5.4",
+    "nyc": "^11.7.1",
     "source-map-support": "^0.5.4",
     "tape": "^4.9.0",
     "typescript": "~2.6.1"
