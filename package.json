@@ -9,12 +9,14 @@
     "rss": "build/src/cli.js"
   },
   "dependencies": {
-    "npm-package-arg": "^6.0.0"
+    "npm-package-arg": "^6.0.0",
+    "update-notifier": "^2.5.0"
   },
   "devDependencies": {
     "@types/node": "^9.6.1",
     "@types/npm-package-arg": "^5.1.0",
     "@types/tape": "^4.2.32",
+    "@types/update-notifier": "^2.2.0",
     "codecov": "^3.0.0",
     "gts": "^0.5.4",
     "nyc": "^11.7.1",
