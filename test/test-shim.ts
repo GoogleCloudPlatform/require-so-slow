@@ -2,7 +2,7 @@
 const MODULE = require('module');
 const ORIG_LOAD = MODULE._load;
 
-import * as test from 'tape';
+import test from 'tape';
 import * as shim from '../src/shim';
 import * as perfTrace from '../src/perf-trace';
 

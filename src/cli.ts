@@ -3,9 +3,8 @@
 import {execSync} from 'child_process';
 import * as path from 'path';
 import * as shim from './shim';
-import * as npa from 'npm-package-arg';
-import * as up from 'update-notifier';
-
+import npa from 'npm-package-arg';
+import up from 'update-notifier';
 const pkg = require('../../package.json');
 up({pkg}).notify();
 
