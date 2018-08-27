@@ -6,7 +6,8 @@
   "main": "build/src/index.js",
   "types": "build/src/index.d.ts",
   "bin": {
-    "rss": "build/src/cli.js"
+    "rss": "build/src/cli.js",
+    "require-so-slow":"build/src/cli.js"
   },
   "dependencies": {
     "npm-package-arg": "^6.1.0",
