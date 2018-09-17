@@ -7,7 +7,7 @@
   "types": "build/src/index.d.ts",
   "bin": {
     "rss": "build/src/cli.js",
-    "require-so-slow":"build/src/cli.js"
+    "require-so-slow": "build/src/cli.js"
   },
   "dependencies": {
     "npm-package-arg": "^6.1.0",
@@ -24,6 +24,9 @@
     "source-map-support": "^0.5.6",
     "tape": "^4.9.1",
     "typescript": "~2.9.1"
+  },
+  "engines": {
+    "node": ">=6"
   },
   "scripts": {
     "test": "nyc tape -r source-map-support/register build/test/test*.js",
