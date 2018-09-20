@@ -22,3 +22,7 @@ export function createShim() {
 export function write(path: string) {
   perfTrace.write(path);
 }
+
+export function getAndClearEvents(): perfTrace.Event[] {
+  return perfTrace.getAndClearEvents();
+}
