@@ -12,6 +12,7 @@
   "dependencies": {
     "meow": "^5.0.0",
     "npm-package-arg": "^6.1.0",
+    "tmp": "0.0.33",
     "update-notifier": "^2.5.0"
   },
   "devDependencies": {
@@ -20,6 +21,7 @@
     "@types/node-fetch": "^2.1.2",
     "@types/npm-package-arg": "^5.1.0",
     "@types/tape": "^4.2.32",
+    "@types/tmp": "0.0.33",
     "@types/update-notifier": "^2.2.0",
     "codecov": "^3.0.2",
     "gts": "^0.8.0",
