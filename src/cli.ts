@@ -7,6 +7,7 @@ import * as npa from 'npm-package-arg';
 import * as up from 'update-notifier';
 import * as meow from 'meow';
 import fetch from 'node-fetch';
+import * as tmp from 'tmp';
 
 const MODULE = require('module');
 
@@ -51,18 +52,38 @@ function requireFromDirectory(request: string, directory: string) {
   return MODULE._load(request, fakeParent, false);
 }
 
+function runInTmpDirectory(keep: boolean, fn: Function) {
+  const dir = tmp.dirSync({keep, unsafeCleanup: true});
+
+  const origDir = process.cwd();
+  process.chdir(dir.name);
+
+  const result = fn(dir.name);
+
+  process.chdir(origDir);
+  if (!keep) {
+    dir.removeCallback();
+  }
+  return result;
+}
+
 async function main() {
   const mod = cli.input[0];
   const parsed = npa(mod);
 
-  // TODO: run this in a temporary directory.
-  execSync(`npm install --no-save ${mod}`, {stdio: 'inherit'});
+  // TODO: add flag to allow users to run in local directory.
+  // TODO: add flag to keep the temp directory.
+  runInTmpDirectory(false, () => {
+    execSync(`npm init -y`);
+    execSync(`npm install --no-save ${mod}`, {stdio: 'inherit'});
 
-  shim.createShim();
+    shim.createShim();
 
-  // Cannot use `require` here as it would consider *this file* to be the parent
-  // and resolve relative to here.
-  requireFromDirectory(parsed.name!, process.cwd());
+    // Cannot use `require` here as it would consider *this file* to be the
+    // parent and resolve relative to here.
+    requireFromDirectory(parsed.name!, process.cwd());
+  });
+
 
   if (cli.flags.upload) {
     if (!process.env.TRACE_SERVICE) {
@@ -85,6 +106,8 @@ async function main() {
     const relativePath = path.relative(process.cwd(), outputPath);
     shim.write(outputPath);
     console.info(`✨ Trace data written to \`${relativePath}\` ✨`);
+    console.info(
+        `To view, drop file in: https://chromedevtools.github.io/timeline-viewer/`);
   }
 }
 
