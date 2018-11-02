@@ -47,9 +47,7 @@ if (cli.input.length !== 1) {
 }
 
 function requireFromDirectory(request: string, directory: string) {
-  const fakeParent = {
-    paths: [path.join(directory, 'node_modules')]
-  };
+  const fakeParent = {paths: [path.join(directory, 'node_modules')]};
   return MODULE._load(request, fakeParent, false);
 }
 
