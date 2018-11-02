@@ -85,6 +85,8 @@ async function main() {
     const relativePath = path.relative(process.cwd(), outputPath);
     shim.write(outputPath);
     console.info(`✨ Trace data written to \`${relativePath}\` ✨`);
+    console.info(
+        `To view, drop file in: https://chromedevtools.github.io/timeline-viewer/`);
   }
 }
 
