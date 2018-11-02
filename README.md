@@ -8,7 +8,7 @@
 This module produces a timeline of your `require`s and produces an output
 that you can load in the Chrome [Timeline Viewer][].
 
-[![Trace Viewer](doc/trace.png)](https://chromedevtools.github.io/timeline-viewer/?loadTimelineFromURL=https://storage.googleapis.com/devtools-trace-public-bucket/painstaking-economic-purple-impolite-deadpan-Wolverine)
+[![Trace Viewer](doc/trace.png)](https://chromedevtools.github.io/timeline-viewer/?loadTimelineFromURL=https://gist.githubusercontent.com/ofrobots/807e41c6931726710cf7187680a095a7/raw/2843049b37145316204bb6fd7766b4f0e0b58989/request.trace)
 
 Click on the image above to go see an interactive version.
 
