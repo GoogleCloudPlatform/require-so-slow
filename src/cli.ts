@@ -8,6 +8,8 @@ import * as up from 'update-notifier';
 import * as meow from 'meow';
 import fetch from 'node-fetch';
 
+const MODULE = require('module');
+
 const pkg = require('../../package.json');
 up({pkg}).notify();
 
@@ -44,14 +46,23 @@ if (cli.input.length !== 1) {
   cli.showHelp(2);
 }
 
+function requireFromDirectory(request: string, directory: string) {
+  const fakeParent = {paths: [path.join(directory, 'node_modules')]};
+  return MODULE._load(request, fakeParent, false);
+}
+
 async function main() {
   const mod = cli.input[0];
   const parsed = npa(mod);
 
+  // TODO: run this in a temporary directory.
   execSync(`npm install --no-save ${mod}`, {stdio: 'inherit'});
 
   shim.createShim();
-  require(parsed.name!);
+
+  // Cannot use `require` here as it would consider *this file* to be the parent
+  // and resolve relative to here.
+  requireFromDirectory(parsed.name!, process.cwd());
 
   if (cli.flags.upload) {
     if (!process.env.TRACE_SERVICE) {
