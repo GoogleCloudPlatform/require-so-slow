@@ -1,5 +1,15 @@
 {
   "extends": [
-    "config:base"
+    "config:base",
+    "docker:disable"
+  ],
+  "pinVersions": false,
+  "rebaseStalePrs": true,
+  "gitAuthor": null,
+  "packageRules": [
+    {
+      "extends": "packages:linters",
+      "groupName": "linters"
+    }
   ]
 }
