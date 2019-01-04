@@ -22,6 +22,8 @@ workflows:
           filters: *release_tags
       - node10:
           filters: *release_tags
+      - node11:
+          filters: *release_tags
       - publish_npm:
           requires:
             - node6
