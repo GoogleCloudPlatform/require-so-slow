@@ -13,7 +13,7 @@
     "meow": "^5.0.0",
     "node-fetch": "^2.2.0",
     "npm-package-arg": "^6.1.0",
-    "tmp": "0.0.33",
+    "tmp": "0.1.0",
     "update-notifier": "^2.5.0"
   },
   "devDependencies": {
