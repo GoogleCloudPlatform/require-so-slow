@@ -85,5 +85,5 @@ export function snapshotMemoryUsage() {
   // The counter displays as a stacked bar graph, so compute metrics
   // that sum to the appropriate total.
   const unused = snapshot.heapTotal - snapshot.heapUsed;
-  counter('memory', { used: snapshot.heapUsed, unused: unused });
+  counter('memory', { used: snapshot.heapUsed, unused });
 }
