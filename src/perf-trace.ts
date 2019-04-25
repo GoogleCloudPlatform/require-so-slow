@@ -28,7 +28,7 @@ export type Microseconds = number;
 /** @return a high-res timestamp of the current time. */
 export function now(): Microseconds {
   const [sec, nsec] = process.hrtime();
-  return (sec * 1e6) + (nsec / 1e3);
+  return sec * 1e6 + nsec / 1e3;
 }
 
 /**
@@ -38,8 +38,8 @@ export function now(): Microseconds {
  */
 export interface Event {
   name: string;
-  ph: 'B'|'E'|'X'|'C';
-  pid: number;  // Required field in the trace viewer, but we don't use it.
+  ph: 'B' | 'E' | 'X' | 'C';
+  pid: number; // Required field in the trace viewer, but we don't use it.
   ts: Microseconds;
   dur?: Microseconds;
   args?: {};
@@ -54,7 +54,7 @@ export function wrap<T>(name: string, f: () => T): T {
     return f();
   } finally {
     const end = now();
-    events.push({name, ph: 'X', pid: 1, ts: start, dur: (end - start)});
+    events.push({ name, ph: 'X', pid: 1, ts: start, dur: end - start });
   }
 }
 
@@ -63,13 +63,13 @@ export function wrap<T>(name: string, f: () => T): T {
  * single graph, while the counts object provides data for each count
  * of a line on the stacked bar graph.
  */
-export function counter(name: string, counts: {[name: string]: number}) {
-  events.push({name, ph: 'C', pid: 1, ts: now(), args: counts});
+export function counter(name: string, counts: { [name: string]: number }) {
+  events.push({ name, ph: 'C', pid: 1, ts: now(), args: counts });
 }
 
 /** write writes the trace in Chrome Trace format to a given path. */
 export function write(path: string) {
-  fs.writeFileSync(path, JSON.stringify(events), {encoding: 'utf8'});
+  fs.writeFileSync(path, JSON.stringify(events), { encoding: 'utf8' });
 }
 
 /** returns and clears the event buffer. */
@@ -85,5 +85,5 @@ export function snapshotMemoryUsage() {
   // The counter displays as a stacked bar graph, so compute metrics
   // that sum to the appropriate total.
   const unused = snapshot.heapTotal - snapshot.heapUsed;
-  counter('memory', {'used': snapshot.heapUsed, 'unused': unused});
+  counter('memory', { used: snapshot.heapUsed, unused });
 }
