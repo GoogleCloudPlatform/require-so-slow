@@ -32,7 +32,7 @@
     "typescript": "~3.4.0"
   },
   "engines": {
-    "node": ">=6"
+    "node": ">=8"
   },
   "scripts": {
     "test": "nyc tape -r source-map-support/register build/test/test*.js",
