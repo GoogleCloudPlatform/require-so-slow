@@ -1,4 +1,3 @@
-
 const MODULE = require('module');
 const ORIG_LOAD = MODULE._load;
 
@@ -37,13 +36,15 @@ test('trace recording should have appropriate events', t => {
   const t0 = perfTrace.now();
   require(path);
   const t1 = perfTrace.now();
-  const matchingEvents =
-      filterRequireEvent(perfTrace.getAndClearEvents(), path);
+  const matchingEvents = filterRequireEvent(
+    perfTrace.getAndClearEvents(),
+    path
+  );
   t.equal(matchingEvents.length, 1);
   const event = matchingEvents[0];
   t.true(event.ts >= t0);
   t.true(event.ts <= t1);
-  t.true(event.dur && event.dur <= (t1 - t0));
+  t.true(event.dur && event.dur <= t1 - t0);
   t.end();
 });
 
@@ -52,8 +53,10 @@ test('trace recording should be accurate', t => {
   const t0 = perfTrace.now();
   require(path);
   const t1 = perfTrace.now();
-  const matchingEvents =
-      filterRequireEvent(perfTrace.getAndClearEvents(), path);
+  const matchingEvents = filterRequireEvent(
+    perfTrace.getAndClearEvents(),
+    path
+  );
   t.equal(matchingEvents.length, 1);
   const event = matchingEvents[0];
   t.true(event.dur && event.dur >= 2000);
