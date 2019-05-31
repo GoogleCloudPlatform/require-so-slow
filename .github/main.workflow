@@ -1,4 +1,3 @@
------ put the content below in .github/main.workflow -----
 workflow "Groom Release PR" {
   on = "push"
   resolves = ["release-pr"]
