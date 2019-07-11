@@ -27,6 +27,13 @@ $ npx require-so-slow got@rc
 $ npm require-so-slow -o lodash.trace.json lodash
 ```
 
+You can also preload require-so-slow from node:
+```shell
+npm i -D require-so-slow
+
+# Traces the entire execution and outputs to require-so-slow.trace
+node -r require-so-slow [moduleOrEntrypoint]
+```
 
 ## API
 

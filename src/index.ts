@@ -5,3 +5,9 @@ export function write(path: string) {
 }
 
 shim.createShim();
+
+if (module.parent && module.parent.id === 'internal/preload') {
+  process.on('exit', () => {
+    write('require-so-slow.trace');
+  });
+}
