@@ -1,9 +1,13 @@
 const MODULE = require('module');
 const ORIG_LOAD = MODULE._load;
 
+import { execSync } from 'child_process';
+import { existsSync, readFileSync, unlinkSync } from 'fs';
+import { tmpdir } from 'os';
+import { resolve } from 'path';
 import * as test from 'tape';
-import * as shim from '../src/shim';
 import * as perfTrace from '../src/perf-trace';
+import * as shim from '../src/shim';
 
 function filterRequireEvent(events: perfTrace.Event[], path: string) {
   return events.filter(event => event.name === `require ${path}`);
@@ -67,6 +71,22 @@ test('modules already in cached do not show up in trace', t => {
   require('./fixtures/modC');
   const events = perfTrace.getAndClearEvents();
   t.equal(events.length, 1);
+  t.end();
+});
+
+test('preload traces the entire main execution and writes it to a file', t => {
+  const script = './build/test/fixtures/modA.js';
+  const tracePath = `${tmpdir()}/require-so-slow.trace`;
+  const command = `TRACE_OUTFILE=${tracePath} node -r ./build/src/index.js ${script}`;
+  execSync(command);
+  t.true(existsSync(tracePath));
+  const events: Array<{ name: string }> = JSON.parse(
+    readFileSync(tracePath, 'utf8')
+  );
+  unlinkSync(tracePath);
+  // Can't test that 'require /.../index.js' is the first event because nyc
+  // hacks things into the node subprocess
+  t.assert(events.find(e => e.name === `require ${resolve(script)}`));
   t.end();
 });
 
