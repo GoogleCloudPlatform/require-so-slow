@@ -91,6 +91,20 @@ test('preload traces from the entrypoint and writes it to an env controlled file
   t.end();
 });
 
+test('preload writes to require-so-slow.trace by default', t => {
+  const script = join(__dirname, './fixtures/modA.js');
+  const rssPath = join(__dirname, '../src/index.js');
+  const prevDir = process.cwd();
+  process.chdir(tmpdir());
+  const tracePath = resolve('./require-so-slow.trace');
+  if (existsSync(tracePath)) unlinkSync(tracePath);
+  const command = `node -r ${rssPath} ${script}`;
+  execSync(command);
+  t.true(existsSync(tracePath));
+  process.chdir(prevDir);
+  t.end();
+});
+
 test.skip('record a trace for a module that throws', t => {});
 
 test.skip('record a trace for a non-existent module', t => {});
