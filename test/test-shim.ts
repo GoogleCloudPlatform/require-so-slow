@@ -4,7 +4,7 @@ const ORIG_LOAD = MODULE._load;
 import { execSync } from 'child_process';
 import { existsSync, readFileSync, unlinkSync } from 'fs';
 import { tmpdir } from 'os';
-import { resolve } from 'path';
+import { join, resolve } from 'path';
 import * as test from 'tape';
 import * as perfTrace from '../src/perf-trace';
 import * as shim from '../src/shim';
@@ -74,10 +74,11 @@ test('modules already in cached do not show up in trace', t => {
   t.end();
 });
 
-test('preload traces the entire main execution and writes it to a file', t => {
-  const script = './build/test/fixtures/modA.js';
-  const tracePath = `${tmpdir()}/require-so-slow.trace`;
-  const command = `TRACE_OUTFILE=${tracePath} node -r ./build/src/index.js ${script}`;
+test('preload traces from the entrypoint and writes it to an env controlled file', t => {
+  const script = join(__dirname, './fixtures/modA.js');
+  const rssPath = join(__dirname, '../src/index.js');
+  const tracePath = join(tmpdir(), `./require-so-slow.trace`);
+  const command = `TRACE_OUTFILE=${tracePath} node -r ${rssPath} ${script}`;
   execSync(command);
   t.true(existsSync(tracePath));
   const events: Array<{ name: string }> = JSON.parse(
