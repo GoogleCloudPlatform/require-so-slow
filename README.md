@@ -31,11 +31,11 @@ You can also preload require-so-slow from node:
 ```shell
 npm i -D require-so-slow
 
-# Traces the entire execution and outputs to require-so-slow.trace:
-node -r require-so-slow [moduleOrEntrypoint]
+# Traces the entire execution of entrypoint and writes to
+# ./require-so-slow.trace by default
+$ node -r require-so-slow [entrypoint]
 
-# You can specify the output file with an environment variable:
-TRACE_OUTFILE=./rss.trace node -r require-so-slow [moduleOrEntrypoint]
+# The output path can be changed with the TRACE_OUTFILE environent variable
 ```
 
 ## API
