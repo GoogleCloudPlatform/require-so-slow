@@ -2,7 +2,7 @@ const MODULE = require('module');
 const ORIG_LOAD = MODULE._load;
 
 import { execSync } from 'child_process';
-import { existsSync, readFileSync, unlinkSync } from 'fs';
+import { existsSync, mkdtempSync, readFileSync } from 'fs';
 import { tmpdir } from 'os';
 import { join, resolve } from 'path';
 import * as test from 'tape';
@@ -74,35 +74,53 @@ test('modules already in cached do not show up in trace', t => {
   t.end();
 });
 
-test('preload traces from the entrypoint and writes it to an env controlled file', t => {
+function moveToEmptyTempDir(): string {
+  const dir = mkdtempSync(join(tmpdir(), 'rss-test'));
+  const prev = process.cwd();
+  process.chdir(dir);
+  return prev;
+}
+
+test('preload traces from the start of the entrypoint and writes it to a file', t => {
+  const prevDir = moveToEmptyTempDir();
+
   const script = join(__dirname, 'fixtures', 'modA.js');
   const rssPath = join(__dirname, '..', 'src', 'index.js');
-  const tracePath = join(tmpdir(), `require-so-slow.trace`);
+  const tracePath = resolve(`require-so-slow.trace`);
   const nodePath = process.execPath;
-  const command = `TRACE_OUTFILE=${tracePath} ${nodePath} -r ${rssPath} ${script}`;
+  const command = `${nodePath} -r ${rssPath} ${script}`;
+
   execSync(command);
   t.true(existsSync(tracePath));
+
   const events: Array<{ name: string }> = JSON.parse(
     readFileSync(tracePath, 'utf8')
   );
-  unlinkSync(tracePath);
   // Can't test that 'require /.../index.js' is the first event because nyc
   // hacks things into the node subprocess
   t.assert(events.find(e => e.name === `require ${resolve(script)}`));
+
+  process.chdir(prevDir);
   t.end();
 });
 
-test('preload writes to require-so-slow.trace by default', t => {
+test('preload writes to a default path, otherwise to an env-specified directory', t => {
+  const prevDir = moveToEmptyTempDir();
+
   const script = join(__dirname, 'fixtures', 'modA.js');
   const rssPath = join(__dirname, '..', 'src', 'index.js');
-  const nodePath = process.execPath;
-  const prevDir = process.cwd();
-  process.chdir(tmpdir());
   const tracePath = resolve('require-so-slow.trace');
-  if (existsSync(tracePath)) unlinkSync(tracePath);
+  const nodePath = process.execPath;
   const command = `${nodePath} -r ${rssPath} ${script}`;
+
   execSync(command);
   t.true(existsSync(tracePath));
+
+  const envTracePath = resolve('rss.trace');
+  const command2 = `TRACE_OUTFILE=${envTracePath} ${nodePath} -r ${rssPath} ${script}`;
+  execSync(command2);
+  t.true(existsSync(envTracePath));
+
   process.chdir(prevDir);
   t.end();
 });
