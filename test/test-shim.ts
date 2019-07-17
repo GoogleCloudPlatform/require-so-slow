@@ -75,10 +75,11 @@ test('modules already in cached do not show up in trace', t => {
 });
 
 test('preload traces from the entrypoint and writes it to an env controlled file', t => {
-  const script = join(__dirname, './fixtures/modA.js');
-  const rssPath = join(__dirname, '../src/index.js');
-  const tracePath = join(tmpdir(), `./require-so-slow.trace`);
-  const command = `TRACE_OUTFILE=${tracePath} node -r ${rssPath} ${script}`;
+  const script = join(__dirname, 'fixtures', 'modA.js');
+  const rssPath = join(__dirname, '..', 'src', 'index.js');
+  const tracePath = join(tmpdir(), `require-so-slow.trace`);
+  const nodePath = process.execPath;
+  const command = `TRACE_OUTFILE=${tracePath} ${nodePath} -r ${rssPath} ${script}`;
   execSync(command);
   t.true(existsSync(tracePath));
   const events: Array<{ name: string }> = JSON.parse(
@@ -92,13 +93,14 @@ test('preload traces from the entrypoint and writes it to an env controlled file
 });
 
 test('preload writes to require-so-slow.trace by default', t => {
-  const script = join(__dirname, './fixtures/modA.js');
-  const rssPath = join(__dirname, '../src/index.js');
+  const script = join(__dirname, 'fixtures', 'modA.js');
+  const rssPath = join(__dirname, '..', 'src', 'index.js');
+  const nodePath = process.execPath;
   const prevDir = process.cwd();
   process.chdir(tmpdir());
-  const tracePath = resolve('./require-so-slow.trace');
+  const tracePath = resolve('require-so-slow.trace');
   if (existsSync(tracePath)) unlinkSync(tracePath);
-  const command = `node -r ${rssPath} ${script}`;
+  const command = `${nodePath} -r ${rssPath} ${script}`;
   execSync(command);
   t.true(existsSync(tracePath));
   process.chdir(prevDir);
