@@ -74,55 +74,55 @@ test('modules already in cached do not show up in trace', t => {
   t.end();
 });
 
-function moveToEmptyTempDir(): string {
+function inEmptyDir(fn: Function): void {
   const dir = mkdtempSync(join(tmpdir(), 'rss-test'));
   const prev = process.cwd();
   process.chdir(dir);
-  return prev;
+  try {
+    fn();
+  } finally {
+    process.chdir(prev);
+  }
 }
 
 test('preload traces from the start of the entrypoint and writes it to a file', t => {
-  const prevDir = moveToEmptyTempDir();
+  inEmptyDir(() => {
+    const script = join(__dirname, 'fixtures', 'modA.js');
+    const rssPath = join(__dirname, '..', 'src', 'index.js');
+    const tracePath = resolve(`require-so-slow.trace`);
+    const nodePath = process.execPath;
+    const command = `${nodePath} -r ${rssPath} ${script}`;
 
-  const script = join(__dirname, 'fixtures', 'modA.js');
-  const rssPath = join(__dirname, '..', 'src', 'index.js');
-  const tracePath = resolve(`require-so-slow.trace`);
-  const nodePath = process.execPath;
-  const command = `${nodePath} -r ${rssPath} ${script}`;
+    execSync(command);
+    t.true(existsSync(tracePath));
 
-  execSync(command);
-  t.true(existsSync(tracePath));
-
-  const events: Array<{ name: string }> = JSON.parse(
-    readFileSync(tracePath, 'utf8')
-  );
-  // Can't test that 'require /.../index.js' is the first event because nyc
-  // hacks things into the node subprocess
-  t.assert(events.find(e => e.name === `require ${resolve(script)}`));
-
-  process.chdir(prevDir);
-  t.end();
+    const events: Array<{ name: string }> = JSON.parse(
+      readFileSync(tracePath, 'utf8')
+    );
+    // Can't test that 'require /.../index.js' is the first event because nyc
+    // hacks things into the node subprocess
+    t.assert(events.find(e => e.name === `require ${resolve(script)}`));
+    t.end();
+  });
 });
 
 test('preload writes to a default path, otherwise to an env-specified directory', t => {
-  const prevDir = moveToEmptyTempDir();
+  inEmptyDir(() => {
+    const script = join(__dirname, 'fixtures', 'modA.js');
+    const rssPath = join(__dirname, '..', 'src', 'index.js');
+    const tracePath = resolve('require-so-slow.trace');
+    const nodePath = process.execPath;
+    const command = `${nodePath} -r ${rssPath} ${script}`;
 
-  const script = join(__dirname, 'fixtures', 'modA.js');
-  const rssPath = join(__dirname, '..', 'src', 'index.js');
-  const tracePath = resolve('require-so-slow.trace');
-  const nodePath = process.execPath;
-  const command = `${nodePath} -r ${rssPath} ${script}`;
+    execSync(command);
+    t.true(existsSync(tracePath));
 
-  execSync(command);
-  t.true(existsSync(tracePath));
-
-  const envTracePath = resolve('rss.trace');
-  const command2 = `TRACE_OUTFILE=${envTracePath} ${nodePath} -r ${rssPath} ${script}`;
-  execSync(command2);
-  t.true(existsSync(envTracePath));
-
-  process.chdir(prevDir);
-  t.end();
+    const envTracePath = resolve('rss.trace');
+    const command2 = `TRACE_OUTFILE=${envTracePath} ${nodePath} -r ${rssPath} ${script}`;
+    execSync(command2);
+    t.true(existsSync(envTracePath));
+    t.end();
+  });
 });
 
 test.skip('record a trace for a module that throws', t => {});
