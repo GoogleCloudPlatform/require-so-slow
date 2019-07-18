@@ -1,9 +1,13 @@
 const MODULE = require('module');
 const ORIG_LOAD = MODULE._load;
 
+import { execSync } from 'child_process';
+import { existsSync, mkdtempSync, readFileSync } from 'fs';
+import { tmpdir } from 'os';
+import { join, resolve } from 'path';
 import * as test from 'tape';
-import * as shim from '../src/shim';
 import * as perfTrace from '../src/perf-trace';
+import * as shim from '../src/shim';
 
 function filterRequireEvent(events: perfTrace.Event[], path: string) {
   return events.filter(event => event.name === `require ${path}`);
@@ -68,6 +72,57 @@ test('modules already in cached do not show up in trace', t => {
   const events = perfTrace.getAndClearEvents();
   t.equal(events.length, 1);
   t.end();
+});
+
+function inEmptyDir(fn: Function): void {
+  const dir = mkdtempSync(join(tmpdir(), 'rss-test'));
+  const prev = process.cwd();
+  process.chdir(dir);
+  try {
+    fn();
+  } finally {
+    process.chdir(prev);
+  }
+}
+
+test('preload traces from the start of the entrypoint and writes it to a file', t => {
+  inEmptyDir(() => {
+    const script = join(__dirname, 'fixtures', 'modA.js');
+    const rssPath = join(__dirname, '..', 'src', 'index.js');
+    const tracePath = resolve(`require-so-slow.trace`);
+    const nodePath = process.execPath;
+    const command = `${nodePath} -r ${rssPath} ${script}`;
+
+    execSync(command);
+    t.true(existsSync(tracePath));
+
+    const events: Array<{ name: string }> = JSON.parse(
+      readFileSync(tracePath, 'utf8')
+    );
+    // Can't test that 'require /.../index.js' is the first event because nyc
+    // hacks things into the node subprocess
+    t.assert(events.find(e => e.name === `require ${resolve(script)}`));
+    t.end();
+  });
+});
+
+test('preload writes to a default path, otherwise to an env-specified directory', t => {
+  inEmptyDir(() => {
+    const script = join(__dirname, 'fixtures', 'modA.js');
+    const rssPath = join(__dirname, '..', 'src', 'index.js');
+    const tracePath = resolve('require-so-slow.trace');
+    const nodePath = process.execPath;
+    const command = `${nodePath} -r ${rssPath} ${script}`;
+
+    execSync(command);
+    t.true(existsSync(tracePath));
+
+    const envTracePath = resolve('rss.trace');
+    const command2 = `TRACE_OUTFILE=${envTracePath} ${nodePath} -r ${rssPath} ${script}`;
+    execSync(command2);
+    t.true(existsSync(envTracePath));
+    t.end();
+  });
 });
 
 test.skip('record a trace for a module that throws', t => {});
