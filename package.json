@@ -29,7 +29,7 @@
     "nyc": "^14.0.0",
     "source-map-support": "^0.5.6",
     "tape": "^4.9.1",
-    "typescript": "~3.5.0"
+    "typescript": "~3.6.0"
   },
   "engines": {
     "node": ">=8"
