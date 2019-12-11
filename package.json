@@ -10,7 +10,7 @@
     "require-so-slow": "build/src/cli.js"
   },
   "dependencies": {
-    "meow": "^5.0.0",
+    "meow": "^6.0.0",
     "node-fetch": "^2.2.0",
     "npm-package-arg": "^7.0.0",
     "tmp": "0.1.0",
