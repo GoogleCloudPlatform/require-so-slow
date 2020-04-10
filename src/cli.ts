@@ -5,7 +5,6 @@ import * as path from 'path';
 import * as shim from './shim';
 import * as npa from 'npm-package-arg';
 
-
 const usage = `Parameters can be provided in the forms of:
   $ rss googleapis
   $ rss googleapis@20
@@ -16,6 +15,7 @@ const usage = `Parameters can be provided in the forms of:
 const args = process.argv.slice(2);
 if (args.length < 1) {
   console.error(usage);
+  // eslint-disable-next-line no-process-exit
   process.exit();
 }
 

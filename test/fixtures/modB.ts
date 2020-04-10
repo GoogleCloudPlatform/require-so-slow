@@ -1,4 +1,3 @@
-
 import {now} from '../../src/perf-trace';
 
 // Take a long time.

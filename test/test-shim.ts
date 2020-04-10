@@ -1,4 +1,4 @@
-
+// eslint-disable-next-line @typescript-eslint/no-var-requires
 const MODULE = require('module');
 const ORIG_LOAD = MODULE._load;
 
@@ -37,23 +37,27 @@ test('trace recording should have appropriate events', t => {
   const t0 = perfTrace.now();
   require(path);
   const t1 = perfTrace.now();
-  const matchingEvents =
-      filterRequireEvent(perfTrace.getAndClearEvents(), path);
+  const matchingEvents = filterRequireEvent(
+    perfTrace.getAndClearEvents(),
+    path
+  );
   t.equal(matchingEvents.length, 1);
   const event = matchingEvents[0];
   t.true(event.ts >= t0);
   t.true(event.ts <= t1);
-  t.true(event.dur && event.dur <= (t1 - t0));
+  t.true(event.dur && event.dur <= t1 - t0);
   t.end();
 });
 
 test('trace recording should be accurate', t => {
   const path = './fixtures/modB';
-  const t0 = perfTrace.now();
+  perfTrace.now();
   require(path);
-  const t1 = perfTrace.now();
-  const matchingEvents =
-      filterRequireEvent(perfTrace.getAndClearEvents(), path);
+  perfTrace.now();
+  const matchingEvents = filterRequireEvent(
+    perfTrace.getAndClearEvents(),
+    path
+  );
   t.equal(matchingEvents.length, 1);
   const event = matchingEvents[0];
   t.true(event.dur && event.dur >= 2000);
@@ -67,6 +71,6 @@ test('modules already in cached do not show up in trace', t => {
   t.end();
 });
 
-test.skip('record a trace for a module that throws', t => {});
+test.skip('record a trace for a module that throws', () => {});
 
-test.skip('record a trace for a non-existent module', t => {});
+test.skip('record a trace for a non-existent module', () => {});
