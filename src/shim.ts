@@ -1,4 +1,5 @@
 import * as perfTrace from './perf-trace';
+// eslint-disable-next-line @typescript-eslint/no-var-requires
 const MODULE = require('module');
 
 const REQUIRE_SO_SLOW = Symbol('require-so-slow-monkey-patch');
@@ -8,7 +9,8 @@ export function createShim() {
   if (orig[REQUIRE_SO_SLOW]) {
     return;
   }
-  MODULE._load = function(request: string, parent: {}, isMain: boolean) {
+  MODULE._load = function (request: string) {
+    // eslint-disable-next-line prefer-rest-params
     const args = arguments;
     let exports;
     perfTrace.wrap(`require ${request}`, () => {
