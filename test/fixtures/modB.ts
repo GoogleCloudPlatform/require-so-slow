@@ -1,4 +1,4 @@
-import { now } from '../../src/perf-trace';
+import {now} from '../../src/perf-trace';
 
 // Take a long time.
 const DELAY = 2000;

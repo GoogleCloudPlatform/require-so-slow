@@ -1,10 +1,11 @@
+// eslint-disable-next-line @typescript-eslint/no-var-requires
 const MODULE = require('module');
 const ORIG_LOAD = MODULE._load;
 
-import { execSync } from 'child_process';
-import { existsSync, mkdtempSync, readFileSync } from 'fs';
-import { tmpdir } from 'os';
-import { join, resolve } from 'path';
+import {execSync} from 'child_process';
+import {existsSync, mkdtempSync, readFileSync} from 'fs';
+import {tmpdir} from 'os';
+import {join, resolve} from 'path';
 import * as test from 'tape';
 import * as perfTrace from '../src/perf-trace';
 import * as shim from '../src/shim';
@@ -54,9 +55,9 @@ test('trace recording should have appropriate events', t => {
 
 test('trace recording should be accurate', t => {
   const path = './fixtures/modB';
-  const t0 = perfTrace.now();
+  perfTrace.now();
   require(path);
-  const t1 = perfTrace.now();
+  perfTrace.now();
   const matchingEvents = filterRequireEvent(
     perfTrace.getAndClearEvents(),
     path
@@ -89,14 +90,14 @@ test('preload traces from the start of the entrypoint and writes it to a file', 
   inEmptyDir(() => {
     const script = join(__dirname, 'fixtures', 'modA.js');
     const rssPath = join(__dirname, '..', 'src', 'index.js');
-    const tracePath = resolve(`require-so-slow.trace`);
+    const tracePath = resolve('require-so-slow.trace');
     const nodePath = process.execPath;
     const command = `${nodePath} -r ${rssPath} ${script}`;
 
     execSync(command);
     t.true(existsSync(tracePath));
 
-    const events: Array<{ name: string }> = JSON.parse(
+    const events: Array<{name: string}> = JSON.parse(
       readFileSync(tracePath, 'utf8')
     );
     // Can't test that 'require /.../index.js' is the first event because nyc
@@ -125,6 +126,6 @@ test('preload writes to a default path, otherwise to an env-specified directory'
   });
 });
 
-test.skip('record a trace for a module that throws', t => {});
+test.skip('record a trace for a module that throws', () => {});
 
-test.skip('record a trace for a non-existent module', t => {});
+test.skip('record a trace for a non-existent module', () => {});

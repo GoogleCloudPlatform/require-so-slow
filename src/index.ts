@@ -1,4 +1,4 @@
-import { resolve } from 'path';
+import {resolve} from 'path';
 import * as shim from './shim';
 
 export function write(path: string) {

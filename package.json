@@ -24,21 +24,21 @@
     "@types/tape": "^4.2.32",
     "@types/tmp": "0.1.0",
     "@types/update-notifier": "^4.0.0",
+    "c8": "^7.1.0",
     "codecov": "^3.0.2",
-    "gts": "^1.0.0",
-    "nyc": "^15.0.0",
+    "gts": "^2.0.0",
     "source-map-support": "^0.5.6",
     "tape": "^4.9.1",
     "typescript": "~3.8.0"
   },
   "engines": {
-    "node": ">=8"
+    "node": ">=10"
   },
   "scripts": {
-    "test": "nyc tape -r source-map-support/register build/test/test*.js",
+    "test": "c8 tape -r source-map-support/register build/test/test*.js",
     "check": "gts check",
     "clean": "gts clean",
-    "codecov": "nyc report --reporter=json && codecov -f coverage/*.json",
+    "codecov": "c8 report --reporter=json && codecov -f coverage/*.json",
     "compile": "tsc -p .",
     "fix": "gts fix",
     "prepare": "npm run compile",
@@ -46,9 +46,6 @@
     "posttest": "npm run check"
   },
   "files": [
-    "LICENSE",
-    "package.json",
-    "README.md",
     "build/src"
   ],
   "keywords": [
