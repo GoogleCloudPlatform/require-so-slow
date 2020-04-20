@@ -92,7 +92,7 @@ test('preload traces from the start of the entrypoint and writes it to a file', 
     const rssPath = join(__dirname, '..', 'src', 'index.js');
     const tracePath = resolve('require-so-slow.trace');
     const nodePath = process.execPath;
-    const command = `${nodePath} -r ${rssPath} ${script}`;
+    const command = `"${nodePath}" -r "${rssPath}" ${script}`;
 
     execSync(command);
     t.true(existsSync(tracePath));
@@ -113,14 +113,18 @@ test('preload writes to a default path, otherwise to an env-specified directory'
     const rssPath = join(__dirname, '..', 'src', 'index.js');
     const tracePath = resolve('require-so-slow.trace');
     const nodePath = process.execPath;
-    const command = `${nodePath} -r ${rssPath} ${script}`;
+    const command = `"${nodePath}" -r "${rssPath}" ${script}`;
 
     execSync(command);
     t.true(existsSync(tracePath));
 
     const envTracePath = resolve('rss.trace');
-    const command2 = `TRACE_OUTFILE=${envTracePath} ${nodePath} -r ${rssPath} ${script}`;
-    execSync(command2);
+    const command2 = `"${nodePath}" -r "${rssPath}" ${script}`;
+    execSync(command2, {
+      env: {
+        TRACE_OUTFILE: envTracePath,
+      },
+    });
     t.true(existsSync(envTracePath));
     t.end();
   });
