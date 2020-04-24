@@ -28,7 +28,7 @@
     "codecov": "^3.0.2",
     "gts": "^2.0.0",
     "source-map-support": "^0.5.6",
-    "tape": "^4.9.1",
+    "tape": "^5.0.0",
     "typescript": "~3.8.0"
   },
   "engines": {
