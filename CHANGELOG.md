@@ -1,5 +1,14 @@
 # Changelog
 
+### [2.0.1](https://www.github.com/GoogleCloudPlatform/require-so-slow/compare/v2.0.0...v2.0.1) (2020-04-29)
+
+
+### Bug Fixes
+
+* **deps:** update dependency tmp to v0.2.0 ([#69](https://www.github.com/GoogleCloudPlatform/require-so-slow/issues/69)) ([3ddd571](https://www.github.com/GoogleCloudPlatform/require-so-slow/commit/3ddd5714b3efb85be11f26ba81da690f49610af1))
+* **deps:** update dependency tmp to v0.2.1 ([#71](https://www.github.com/GoogleCloudPlatform/require-so-slow/issues/71)) ([2385ba3](https://www.github.com/GoogleCloudPlatform/require-so-slow/commit/2385ba32f933d642805f5456278d8caab8d5ae61))
+* improve output file name for scoped packages ([#72](https://www.github.com/GoogleCloudPlatform/require-so-slow/issues/72)) ([3506da5](https://www.github.com/GoogleCloudPlatform/require-so-slow/commit/3506da5e635917e4f4c8abd22ee65ec19bedc0cb))
+
 ## [2.0.0](https://www.github.com/GoogleCloudPlatform/require-so-slow/compare/v1.2.0...v2.0.0) (2020-04-15)
 
 
