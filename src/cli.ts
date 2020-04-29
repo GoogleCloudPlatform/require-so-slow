@@ -105,9 +105,12 @@ async function main() {
     console.info(`✨ Trace data uploaded. View at ${json.view}.`);
     // TODO: xdg-open the url.
   } else {
-    const outputPath = cli.flags.output
+    let outputPath = cli.flags.output
       ? cli.flags.output
       : `${parsed.escapedName}.trace`;
+    // Output for scoped packages like `@google-cloud/common`
+    // came out with a %2f for the slash
+    outputPath = outputPath.replace(/%2f/, '-');
     const relativePath = path.relative(process.cwd(), outputPath);
     shim.write(outputPath);
     console.info(`✨ Trace data written to \`${relativePath}\` ✨`);
