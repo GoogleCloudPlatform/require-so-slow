@@ -1,5 +1,12 @@
 # Changelog
 
+### [2.0.3](https://www.github.com/GoogleCloudPlatform/require-so-slow/compare/v2.0.2...v2.0.3) (2020-09-29)
+
+
+### Bug Fixes
+
+* **deps:** update dependency update-notifier to v5 ([#78](https://www.github.com/GoogleCloudPlatform/require-so-slow/issues/78)) ([0d63a51](https://www.github.com/GoogleCloudPlatform/require-so-slow/commit/0d63a516c43598a236c957439b32e81ceab18d8a))
+
 ### [2.0.2](https://www.github.com/GoogleCloudPlatform/require-so-slow/compare/v2.0.1...v2.0.2) (2020-05-18)
 
 
