@@ -14,7 +14,7 @@
     "node-fetch": "^2.2.0",
     "npm-package-arg": "^8.0.0",
     "tmp": "0.2.1",
-    "update-notifier": "^4.0.0"
+    "update-notifier": "^5.0.0"
   },
   "devDependencies": {
     "@types/meow": "^5.0.0",
