@@ -1,5 +1,12 @@
 # Changelog
 
+### [2.0.4](https://www.github.com/GoogleCloudPlatform/require-so-slow/compare/v2.0.3...v2.0.4) (2020-10-29)
+
+
+### Bug Fixes
+
+* **deps:** update dependency meow to v8 ([#82](https://www.github.com/GoogleCloudPlatform/require-so-slow/issues/82)) ([a908d9c](https://www.github.com/GoogleCloudPlatform/require-so-slow/commit/a908d9c5f8a5189f73956e3883e7e275e0001942))
+
 ### [2.0.3](https://www.github.com/GoogleCloudPlatform/require-so-slow/compare/v2.0.2...v2.0.3) (2020-09-29)
 
 
