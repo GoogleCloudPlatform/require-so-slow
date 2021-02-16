@@ -1,0 +1,18 @@
+name: CodeQL
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    # The branches below must be a subset of the branches above
+    branches: [ main ]
+  schedule:
+    - cron: '38 12 * * 6'
+jobs:
+  analyze:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - uses: github/codeql-action/init@v1
+      with:
+        languages: 'javascript'
+    - uses: github/codeql-action/analyze@v1
