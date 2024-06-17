@@ -1,5 +1,5 @@
-
 # require-so-slow
+# This repository is no longer maintained. 
 
 * Wondering why your applications is slow to start?
 * `require` seems to take an eternity?
